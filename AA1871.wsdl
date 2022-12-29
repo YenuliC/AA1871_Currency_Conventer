@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://localhost/software_architecture/server.php" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap-enc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="Bookcatalog.BookService" targetNamespace="http://localhost/software_architecture/server.php">
+  <types>
+    <xsd:schema targetNamespace="http://localhost/software_architecture/server.php">
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+      <xsd:complexType name="Bookcatalog.Transfer">
+        <xsd:all>
+          <xsd:element name="sourceCurrency" type="xsd:string"/>
+          <xsd:element name="targetCurrency" type="xsd:string"/>
+          <xsd:element name="amountInSourceCurrency" type="xsd:int"/>
+        </xsd:all>
+      </xsd:complexType>
+    </xsd:schema>
+  </types>
+  <portType name="Bookcatalog.BookServicePort">
+    <operation name="currency_convert">
+      <input message="tns:currency_convertIn"/>
+      <output message="tns:currency_convertOut"/>
+    </operation>
+  </portType>
+  <binding name="Bookcatalog.BookServiceBinding" type="tns:Bookcatalog.BookServicePort">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="currency_convert">
+      <soap:operation soapAction="http://localhost/software_architecture/server.php#currency_convert"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://localhost/software_architecture/server.php"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://localhost/software_architecture/server.php"/>
+      </output>
+    </operation>
+  </binding>
+  <message name="currency_convertIn">
+    <part name="status_details" type="tns:Bookcatalog.Transfer"/>
+  </message>
+  <message name="currency_convertOut">
+    <part name="return" type="xsd:string"/>
+  </message>
+  <service name="Bookcatalog.BookServiceService">
+    <port name="Bookcatalog.BookServicePort" binding="tns:Bookcatalog.BookServiceBinding">
+      <soap:address location="http://localhost/software_architecture/server.php"/>
+    </port>
+  </service>
+</definitions>
